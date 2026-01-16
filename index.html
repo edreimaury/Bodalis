@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sube tus fotos 💍</title>
+<style>
+body{
+    margin:0;
+    font-family:'Playfair Display', serif;
+    background:url('https://i.imgur.com/kXkQ0YJ.jpg') no-repeat center/cover;
+    min-height:100vh;
+    color:#5a3e36;
+}
+.overlay{
+    background:rgba(255,255,255,0.9);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.box{
+    background:#fff;
+    padding:35px;
+    border-radius:22px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+    text-align:center;
+    max-width:400px;
+}
+h1{
+    color:#b48b5a;
+}
+input[type=file]{
+    margin:20px 0;
+}
+button{
+    background:#b48b5a;
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:30px;
+    cursor:pointer;
+    font-size:16px;
+}
+button:hover{
+    background:#9c7447;
+}
+#contador{
+    margin-top:10px;
+    font-style:italic;
+    color:#7a5c4d;
+}
+</style>
+</head>
+<body>
+
+<div class="overlay">
+<div class="box">
+
+<h1>💘 Comparte tus Recuerdos con nosotros 💘</h1>
+<p style="text-align:center;">EyL</p>
+<p>Selecciona todas las fotos y archivos que quieras compartir</p>
+
+<input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx">
+<div id="contador"></div>
+
+<button onclick="subir()">Subir recuerdos</button>
+
+<p style="margin-top:25px;font-style:italic;">
+Gracias por acompañarnos en este día tan especial ❤️
+</p>
+
+</div>
+</div>
+
+<script>
+function upload() {
+  const file = document.getElementById('file').files[0];
+  if (!file) return alert("Selecciona una foto");
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "boda_fotos");
+
+  fetch("https://api.cloudinary.com/v1_1/dn9wcrsww/image/upload", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(() => {
+    document.getElementById("status").innerText = "✅ Foto subida con éxito";
+  })
+  .catch(() => {
+    document.getElementById("status").innerText = "❌ Error al subir";
+  });
+}
+</script>
+
+</body>
+</html>
