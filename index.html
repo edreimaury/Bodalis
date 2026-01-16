@@ -71,6 +71,49 @@ Gracias por acompañarnos en este día tan especial ❤️
 
 </div>
 </div>
+<script>
+const input = document.getElementById("fileInput");
+const contador = document.getElementById("contador");
+
+input.addEventListener("change", () => {
+    contador.textContent = input.files.length > 0
+        ? `Has seleccionado ${input.files.length} archivo(s)`
+        : "";
+});
+
+function subir(){
+    if(input.files.length === 0){
+        alert("Selecciona al menos un archivo 💐");
+        return;
+    }
+
+    let contenido = JSON.parse(localStorage.getItem("contenido")) || [];
+    let cargados = 0;
+
+    Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            contenido.push({
+                nombre: file.name,
+                tipo: file.type,
+                data: e.target.result
+            });
+
+            cargados++;
+            if(cargados === input.files.length){
+                localStorage.setItem("contenido", JSON.stringify(contenido));
+                alert(`💍 ${cargados} recuerdo(s) subido(s) con éxito`);
+                input.value = "";
+                contador.textContent = "";
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+</script>
+
+</body>
+</html>
 
 <script>
 function upload() {
